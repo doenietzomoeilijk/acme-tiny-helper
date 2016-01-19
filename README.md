@@ -36,3 +36,8 @@ run things from a cron job. Use at your own risk, if this script breaks
 things you get to keep both parts.
 
 If you run into a problem and have a fix, a pull request is always welcome.
+
+## TO DO
+
+* Detect the OS, right now it's hard coded to grab the SSL config in OS X.
+* You tell me! :)
