@@ -6,11 +6,20 @@
 
 set -e
 
-SSLCONF="/System/Library/OpenSSL/openssl.cnf"
-# for Linux: SSLCONF="/etc/ssl/openssl.cnf"
-
 generate ()
 {
+    arch=$(uname -s)
+    if [ "$arch" == "Darwin" ]
+    then
+        SSLCONF="/System/Library/OpenSSL/openssl.cnf"
+    elif [ "$arch" == "Linux" ]
+    then
+        SSLCONF="/etc/ssl/openssl.cnf"
+    else
+        echo "I only know about running on Mac OS X or Linux, sorry."
+        exit 1
+    fi
+
     echo "Generate: domain=$1 sans=$2 SSLCONF=$SSLCONF"
 
     domainkey="domain-${1}.key"
@@ -46,10 +55,29 @@ generate ()
     echo "*** Done!\n"
 }
 
+# Sanity checks
+if [ ! -a "acme_tiny.py" ]
+then
+    echo "ERROR: acme_tiny.py is assumed to be in the same directory."
+    echo "Please make sure it's there and try again."
+    exit 1
+fi
+if [ ! -f "intermediate.pem" ]
+then
+    echo "ERROR: intermediate.pem is assumed to be in the same directory."
+    echo "Please download the Let's Encrypt intermediate certificate from:"
+    echo "  https://letsencrypt.org/certs/lets-encrypt-x1-cross-signed.pem"
+    echo "and save it as intermediate.pem in this directory."
+    exit 1
+fi
+if [ ! -f "config.txt" ]
+then
+    echo "ERROR: config.txt is required but missing."
+    exit 1
+fi
+
+# Run!
 while IFS=' ' read domain sansblob 
 do
-    echo $domain
-    echo $sansblob
     generate $domain $sansblob
-    echo '-----'
 done < config.txt

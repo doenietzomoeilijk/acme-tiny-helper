@@ -1,25 +1,29 @@
 # acme-tiny-helper
-Shell script to do as much heavy lifting for acme-tiny as possible
+
+Shell script to do as much heavy lifting for acme-tiny as possible.
 
 This script requires [acme-tiny](https://github.com/diafygi/acme-tiny),
 and is based on that project's README file.
 
 ## How to use
 
-This script assumes a file `config.txt` to be present, containing a line
-for each domain + it's altnames you want to request certificates for:
+* This script assumes a file `config.txt` to be present, containing a line
+  for each domain + it's altnames you want to request certificates for:
 
-```
-domain.tld DNS:domain.tld,DNS:www.domain.tld,DNS:altname.domain.tld
-```
+  ```
+  domain.tld DNS:domain.tld,DNS:www.domain.tld,DNS:altname.domain.tld
+  ```
+  
+  At this moment the limit is 100 altnames per domainname, but that's up to
+  Let's Encrypt.
 
-At this moment the limit is 100 altnames per domainname, but that's up to
-Let's Encrypt.
+* A second assumption is that anything in the `challenges/` directory is 
+  served by your web server on `/.well-known/acme-challenge/`. The acme-tiny
+  README has an example for Nginx. Test this before you start spamming
+  Let's Encrypt with bogus requests!
 
-A second assumption is that anything in the `challenges/` directory is 
-served by your web server on `/.well-known/acme-challenge/`. The acme-tiny
-README has an example for Nginx. Test this before you start spamming
-Let's Encrypt with bogus requests!
+* Finally, it requires acme_tiny.py and the Let's Encrypt intermediate
+  certificate to be present in the current directory.
 
 After that, it's a matter of running
 
@@ -39,5 +43,7 @@ If you run into a problem and have a fix, a pull request is always welcome.
 
 ## TO DO
 
-* Detect the OS, right now it's hard coded to grab the SSL config in OS X.
-* You tell me! :)
+* Clean things up a bit, maybe keep the keys in a separate directory and the
+  required external files somewhere else.
+* Possibly the option of specifying a domain from your config file, to have it
+  run only for that domain.
