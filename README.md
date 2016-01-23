@@ -23,7 +23,8 @@ and is based on that project's README file.
   Let's Encrypt with bogus requests!
 
 * Finally, it requires acme_tiny.py and the Let's Encrypt intermediate
-  certificate to be present in the current directory.
+  certificate to be present; acme_tiny.py is expected in the current directory,
+  the intermediate certificate is expected in certificates/intermediate.pem.
 
 After that, it's a matter of running
 
@@ -31,7 +32,9 @@ After that, it's a matter of running
 ./generate.sh
 ```
 
-and wait for the magic to happen.
+and wait for the magic to happen. CSR files will be generated into csrs/, keys
+will be generated in keys/, and certificates will be stored in certificates/.
+CSRs and account/domain keys will be re-used.
 
 ## In case of problems...
 
@@ -43,7 +46,5 @@ If you run into a problem and have a fix, a pull request is always welcome.
 
 ## TO DO
 
-* Clean things up a bit, maybe keep the keys in a separate directory and the
-  required external files somewhere else.
 * Possibly the option of specifying a domain from your config file, to have it
   run only for that domain.
