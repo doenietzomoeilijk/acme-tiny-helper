@@ -19,8 +19,8 @@ else
     exit 1
 fi
 
-# Check for acme-tiny
-if [ ! -a "acme_tiny.py" ]
+# Check for acme_tiny
+if [ ! -e "./acme_tiny.py" ]
 then
     echo "ERROR: acme_tiny.py is assumed to be in the same directory."
     echo "Please make sure it's there and try again."
