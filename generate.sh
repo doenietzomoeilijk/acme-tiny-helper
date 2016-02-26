@@ -51,17 +51,19 @@ then
     openssl genrsa 4096 > "keys/account.key"
 fi
 
+currentdir=$(pwd)
+
 # Run for all the domains
 while IFS=' ' read domain sans
 do
-    domainkey="keys/${domain}-domain.key"
+    domainkey="${currentdir}/keys/${domain}-domain.key"
     if [ ! -f "$domainkey" ]
     then
         echo "*** Generating domain key for ${domain}..."
         openssl genrsa 4096 > "$domainkey"
     fi
 
-    csrname="csrs/${domain}.csr"
+    csrname="${currentdir}/csrs/${domain}.csr"
     if [ ! -f "$csrname" ]
     then
         echo "*** Generating CSR for ${domain}..."
@@ -74,15 +76,16 @@ do
     fi
 
     echo "*** Requesting certificate for ${domain}..."
-    signedname="certificates/${domain}.crt"
+    signedname="${currentdir}/certificates/${domain}.crt"
     python acme_tiny.py \
         --account-key keys/account.key \
         --csr $csrname \
-        --acme-dir ./challenges \
+        --acme-dir "${currentdir}/challenges" \
         > $signedname
 
     echo "*** Generating chained .pem file..."
-    cat $signedname ./certificates/intermediate.pem > ${domain}-chained.pem
+    cat $signedname "${currentdir}/certificates/intermediate.pem" \
+        > "${currentdir}/certificates/${domain}-chained.pem"
 
     echo "*** Done!\n"
 done < config.txt
