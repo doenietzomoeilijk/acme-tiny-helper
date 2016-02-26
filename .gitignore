@@ -2,3 +2,7 @@ acme_tiny.py
 config.txt
 keys/*
 certificates/*
+*.csr
+*.key
+*.pem
+*.crt
